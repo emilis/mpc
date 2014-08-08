@@ -1,0 +1,29 @@
+{
+    "name":         "mpc",
+    "version":      "0.0.1",
+    "description":  "Multi-Part Components Parser",
+    "homepage":     "https://github.com/emilis/mpc",
+    "author": {
+        "name":     "Emilis Dambauskas",
+        "email":    "emilis.d@gmail.com"
+    },
+    "bugs": {
+        "url":      "https://github.com/emilis/mpc/issues"
+    },
+    "repository": {
+        "type":     "git",
+        "url":      "https://github.com/emilis/mpc.git"
+    },
+    "bin": {
+        "mpc":      "./bin/mpc"
+    },
+    "main":         "./mpc.js",
+    "licenses": {
+        "type":     "GPL3",
+        "url":      "https://github.com/emilis/mpc/blob/master/LICENSE.txt"
+    },
+    "dependencies": {
+        "toposort": "0.x",
+        "yargs":    "1.2.x"
+    }
+}
