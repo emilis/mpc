@@ -56,7 +56,7 @@ function sortComponents( cList ){
     var edges =         cList.reduce( getEdges, [] );
     var vertices =      toposort( edges ).reverse();
     var cMap =          cList.reduce( makeMap, {} );
-    var sorted =        vertices.map( getFromMap );
+    var sorted =        vertices.map( getFromMap ).filter( fnId );
 
     return sorted;
     

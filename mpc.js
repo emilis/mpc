@@ -84,7 +84,8 @@ function parseFile( fileName, options ){
 function parseDir( dirName, options ){
     dirName =           fsUtils.normalize( dirName );
 
-    var listsOfParts =  fsUtils.findAllFiles( dirName ).map( parser.parseFile );
+    var fileNames =     fsUtils.findAllFiles( dirName ).filter( getFileNameFilter( options ));
+    var listsOfParts =  fileNames.map( parser.parseFile );
     var parts =         flattenArray( listsOfParts );
     var clist =         modularity.sortComponents( components.fromParts( parts ));
 
@@ -143,4 +144,23 @@ function byParts( parts ){
 
         return components.hasParts( component, parts );
     };//
+}///
+
+
+function getFileNameFilter( options ){
+    if ( options.all ){
+        return fnId;
+    } else {
+        return isMpcFileName;
+    }
+}///
+
+function isMpcFileName( fileName ){
+
+    return fsUtils.getExtension( fileName ) === "mpc";
+}///
+
+function fnId( x ){
+
+    return x;
 }///

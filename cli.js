@@ -34,6 +34,7 @@ module.exports = {
 function main(){
 
     var argv =      yargs
+                    .boolean( "a" )
                     .boolean( "r" )
                     .boolean( "c" )
                     .boolean( "h" )
@@ -41,6 +42,7 @@ function main(){
                     .argv;
 
     var options =   {
+        all:        argv.a || argv.all || false,
         recursive:  argv.r || argv.recursive || false,
     };
 
@@ -108,6 +110,7 @@ function getHelp(){
     var str = [
         "Usage: mpc [OPTIONS] DIR/FILE [DIR/FILE...]",
         "Options:",
+        "    -a / --all             Include all files (not only *.mpc).",
         "    -r / --recursive       Include all required components recursively.",
         "    -p / --parts p1,p2,..  Output only specified parts / components having the parts.",
         "    -f / --format fmt      Output components in specified format. One of: csv/json.",

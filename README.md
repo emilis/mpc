@@ -1,4 +1,4 @@
-#   MPC Parser
+#   Multi-Part Components Parser
 
 A command-line program and a Node.js package for extracting information from multi-part components.
 
@@ -18,12 +18,13 @@ $ npm install -g mpc
 $ mpc -h
 Usage: mpc [OPTIONS] DIR/FILE [DIR/FILE...]
 Options:
-    -r / --recursive       Include all required components recursively.
-    -p / --parts p1,p2,..  Output only specified parts / components having the parts.
-    -f / --format fmt      Output components in specified format. One of: csv/json.
-    -c / --cat             Output concatenated part contents.
-    -h / --help            Print this help message.
-    -v / --version         Output version and exit.
+    -a / --all              Include all files (not only *.mpc).
+    -r / --recursive        Include all required components recursively.
+    -p / --parts p1,p2,..   Output only specified parts / components having the parts.
+    -f / --format fmt       Output components in specified format. One of: csv/json.
+    -c / --cat              Output concatenated part contents.
+    -h / --help             Print this help message.
+    -v / --version          Output version and exit.
 ```
 
 ### Usage in Node.js
