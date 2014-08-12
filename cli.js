@@ -113,10 +113,10 @@ function getHelp(){
         "    -a / --all             Include all files (not only *.mpc).",
         "    -r / --recursive       Include all required components recursively.",
         "    -p / --parts p1,p2,..  Output only specified parts / components having the parts.",
-        "    -f / --format fmt      Output components in specified format. One of: csv/json.",
-        "    -c / --cat             Output concatenated part contents.",
+        "    -f / --format fmt      Output component information in specified format. One of: csv/json.",
+        "    -c / --cat             Output concatenated part contents (requires -p).",
         "    -h / --help            Print this help message.",
-        "    -v / --version         Output version and exit.",
+        "    -v / --version         Print version information.",
         ];
 
     return str.join( "\n" );
