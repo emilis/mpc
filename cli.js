@@ -36,6 +36,7 @@ function main(){
     var argv =      yargs
                     .boolean( "a" )
                     .boolean( "r" )
+                    .boolean( "s" )
                     .boolean( "c" )
                     .boolean( "h" )
                     .boolean( "v" )
@@ -44,6 +45,7 @@ function main(){
     var options =   {
         all:        argv.a || argv.all || false,
         recursive:  argv.r || argv.recursive || false,
+        sort:       argv.s || argv.sort || false,
     };
 
     if ( argv.v || argv.version ){
@@ -112,6 +114,7 @@ function getHelp(){
         "Options:",
         "    -a / --all             Include all files (not only *.mpc).",
         "    -r / --recursive       Include all required components recursively.",
+        "    -s / --sort            Sort components by dependency order.",
         "    -p / --parts p1,p2,..  Output only specified parts / components having the parts.",
         "    -f / --format fmt      Output component information in specified format. One of: csv/json.",
         "    -c / --cat             Output concatenated part contents (requires -p).",

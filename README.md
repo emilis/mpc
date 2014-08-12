@@ -18,13 +18,14 @@ $ npm install -g mpc
 $ mpc -h
 Usage: mpc [OPTIONS] DIR/FILE [DIR/FILE...]
 Options:
-    -a / --all              Include all files (not only *.mpc).",
-    -r / --recursive        Include all required components recursively.",
-    -p / --parts p1,p2,..   Output only specified parts / components having the parts.",
-    -f / --format fmt       Output component information in specified format. One of: csv/json.",
-    -c / --cat              Output concatenated part contents (requires -p).",
-    -h / --help             Print this help message.",
-    -v / --version          Print version information.",
+    -a / --all             Include all files (not only *.mpc).
+    -r / --recursive       Include all required components recursively.
+    -s / --sort            Sort components by dependency order.
+    -p / --parts p1,p2,..  Output only specified parts / components having the parts.
+    -f / --format fmt      Output component information in specified format. One of: csv/json.
+    -c / --cat             Output concatenated part contents (requires -p).
+    -h / --help            Print this help message.
+    -v / --version         Print version information.
 ```
 
 ### Usage in Node.js

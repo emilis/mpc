@@ -63,15 +63,20 @@ function parseAll( list, options ){
 
 function parseFile( fileName, options ){
     fileName =          fsUtils.normalize( fileName );
+    options =           options || {};
 
     var component =     components.fromParts( parser.parseFile( fileName ))[0];
     var clist =         [];
 
-    if ( options && options.recursive ){
-        clist =         modularity.sortComponents( getValues( fillRequirements( {}, component )));
+    if ( options.recursive ){
+        clist =         getValues( fillRequirements( {}, component ));
+        if ( options.sort ){
+            clist =     modularity.sortComponents( clist );
+        }
     } else {
         clist =         [ component ];
     }
+
 
     if ( options && options.parts ){
         return clist.filter( byParts( options.parts ));
@@ -87,7 +92,11 @@ function parseDir( dirName, options ){
     var fileNames =     fsUtils.findAllFiles( dirName ).filter( getFileNameFilter( options ));
     var listsOfParts =  fileNames.map( parser.parseFile );
     var parts =         flattenArray( listsOfParts );
-    var clist =         modularity.sortComponents( components.fromParts( parts ));
+    var clist =         components.fromParts( parts );
+
+    if ( options.sort ){
+        clist =         modularity.sortComponents( clist );
+    }
 
     if ( options && options.parts ){
         return clist.filter( byParts( options.parts ));
