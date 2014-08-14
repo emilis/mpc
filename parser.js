@@ -117,7 +117,7 @@ function parseString( str ){
 
                 if ( isNewline( c )){
                     mode =          MNEWLINE;
-                    markPos =       p + 1;
+                    markPos =       p;
                 }
                 break;
 
@@ -223,7 +223,7 @@ function parseString( str ){
 
     }// end for
 
-    savePreviousPart( markPos, p );
+    savePreviousPart( strLen );
 
     return parts;
 
@@ -254,13 +254,13 @@ function parseString( str ){
         }
     }///
 
-    function savePreviousPart( markPos, curPos ){
+    function savePreviousPart( contentEnd, curPos ){
 
         parts.push({
             partName:   headerName,
             offset:     contentPos,
-            length:     markPos - contentPos,
-            content:    str.slice( contentPos, markPos ),
+            length:     contentEnd - contentPos,
+            content:    str.slice( contentPos, contentEnd ),
         });
 
         headerName =    str.slice( markNameBegin, markNameEnd );
