@@ -23,15 +23,35 @@ var fsUtils =           require( "./fs-utils" );
 
 /// Constants ------------------------------------------------------------------
 
-var reHeader =          /^--- (\S.*) ---+$/;
-var reEmptyLine =       /^\s*$/;
+/// Chars:
+var LF =                "\n";
+var CR =                "\r";
+var SPACE =             " ";
+var TAB =               "\t";
+var MINUS =             "-";
+var NUMBERS =           "0123456789";
+var LETTERS =           "abcdefghijklmnopqrstuvwxyz";
+var PARTNAME =          "-_" + NUMBERS + LETTERS + LETTERS.toUpperCase();
+var PARTNAMEMAP =       makeCharMap( PARTNAME );
+
+var i =                 1;
+/// Parser modes:
+var MCONTENT =          i++;
+var MNEWLINE =          i++;
+/// Header sections:
+var MHEAD = {
+    OPEN:               i++,
+    TEXT:               i++,
+    CLOSE:              i++,
+    CLOSEEXT:           i++,
+    NEWLINE:            i++,
+};
 
 /// Exports --------------------------------------------------------------------
 
 module.exports = {
     parseFile:          parseFile,
-    parse:              getParts,
-    getParts:           getParts,
+    parseString:        parseString,
 };
 
 /// Functions ------------------------------------------------------------------
@@ -43,7 +63,7 @@ function parseFile( fileName ){
 
     if ( extension && extension === "mpc" ){
 
-        return getParts( content ).map( addFileName );
+        return parseString( content ).map( addFileName );
 
     } else {
         return [{
@@ -62,95 +82,210 @@ function parseFile( fileName ){
     }///
 }///
 
-function getParts( str ){
+
+function parseString( str ){
 
     var parts =         [];
-    var lines =         [];
-    var curPart =       [];
-    var curPartName;
-    var curOffset =     0;
 
-    if ( str ){
-        lines =         str.split( "\n" );
-        
-        for ( var i=0,len=lines.length; i<len; i++ ){
+    var c;
+    var p =             0;
+    var linen =         1;
+    var linec =         1;
+    var strLen =        str.length;
 
-            if ( isPartHeader( lines, i )){
-                if ( curPart.length ){
+    var firstHeader =   true;
+    var mode =          MHEAD.START;
 
-                    parts.push({
-                        partName:   curPartName,
-                        offset:     linesLength( lines, curOffset ),
-                        length:     linesLength( curPart ),
-                        content:    curPart.join( "\n" ),
-                    });
-                }
-                i && i++;       /// Skip empty line before header.
-                curPartName =   getPartName( lines[i] );
-                curPart =       [];
-                i++;            /// Skip empty line after header.
-                curOffset =     i;
+    var contentPos =    -1;
+    var headerName;
 
-            } else {
+    var markPos =       0;
+    var markNameBegin = -1;
+    var markNameEnd =   -1;
 
-                curPart.push( lines[i] );
-            }
+    for ( p=0; p<strLen; p++ ){
+
+        c =             str[p];
+
+        if ( c === CR ){
+            continue;
         }
 
-        content =       curPart.join( "\n" );
-        parts.push({
-            partName:   curPartName,
-            offset:     linesLength( lines, curOffset ),
-            length:     linesLength( curPart ),
-            content:    curPart.join( "\n" ),
-        });
-    }
+        switch ( mode ){
+
+            case MCONTENT:
+
+                if ( isNewline( c )){
+                    mode =          MNEWLINE;
+                    markPos =       p + 1;
+                }
+                break;
+
+            case MNEWLINE:
+
+                if ( isNewline( c )){
+                    mode =          MHEAD.OPEN;
+                } else if ( !isSpace( c )){
+                    mode =          MCONTENT;
+                }
+                break;
+
+            case MHEAD.START:
+
+                str[p] === MINUS || error( 'Expected "-" but found "', str[p], '"' );
+                p++;
+                linec++;
+                str[p] === MINUS || error( 'Expected "-" but found "', str[p], '"' );
+                p++;
+                linec++;
+                str[p] === MINUS || error( 'Expected "-" but found "', str[p], '"' );
+                p++;
+                linec++;
+                str[p] === SPACE || error( 'Expected "-" but found "', str[p], '"' );
+
+                mode =              MHEAD.TEXT;
+                markNameBegin =     p + 1;
+
+                break;
+
+            case MHEAD.OPEN:
+
+                if ( str.substr( p, 4 ) === "--- " ){
+                    p +=            3;
+                    linec +=        3;
+                    mode =          MHEAD.TEXT;
+                    markNameBegin = p + 1;
+                } else {
+                    mode =          MCONTENT;
+                }
+                break;
+
+            case MHEAD.TEXT:
+
+                if ( c === SPACE ){
+                    mode =          MHEAD.CLOSE;
+                    markNameEnd =   p;
+                } else if ( !PARTNAMEMAP[c] ){
+                    hwarning( "Illegal character in part header title" );
+                }
+                break;
+
+            case MHEAD.CLOSE:
+
+                mode =              MHEAD.CLOSEEXT;
+                str[p] === MINUS || hwarning( 'Expected "-" but found "', str[p], '"' );
+                p++;
+                linec++;
+                str[p] === MINUS || hwarning( 'Expected "-" but found "', str[p], '"' );
+                p++;
+                linec++;
+                str[p] === MINUS || hwarning( 'Expected "-" but found "', str[p], '"' );
+
+                break;
+
+            case MHEAD.CLOSEEXT:
+
+                if ( c === LF ){
+                    mode =          MHEAD.NEWLINE;
+                } else if ( c !== MINUS && c !== SPACE ){
+                    hwarning( "Illegal character in part header" );
+                }
+                break;
+
+            case MHEAD.NEWLINE:
+
+                if ( c === LF ){
+                    mode =          MCONTENT;
+                    if ( firstHeader ){
+                        firstHeader =   false;
+                        contentPos =    p + 1;
+                        headerName =    str.slice( markNameBegin, markNameEnd );
+                    } else {
+                        savePreviousPart( markPos, p + 1 );
+                    }
+                } else if ( !isSpace( c )){
+                    hwarning( "Missing empty line below part header" );
+                }
+                break;
+
+            default:
+                error( "Internal parser error: unknown mode" );
+
+        }// end mode switch
+
+        /// Update line,char counters:
+        if ( c === LF ){
+            linen +=    1;
+            linec =     1;
+        } else {
+            linec +=    1;
+        }
+
+    }// end for
+
+    savePreviousPart( markPos, p );
 
     return parts;
+
+    /// String parser functions ------------------------------------------------
+
+    function formatMsg(){
+
+        return Array.prototype.slice.call( arguments ) .concat([ " (at ", linen, ":", linec, ")." ]) .join( "" );
+    }///
+
+    function error(){
+        
+        throw Error( formatMsg.apply( this, arguments ));
+    }///
+
+    function warning(){
+        
+        console.error( formatMsg.apply( this, arguments ));
+    }///
+
+    function hwarning(){
+        
+        if ( firstHeader ){
+            error.apply( this, arguments );
+        } else {
+            warning.apply( this, arguments );
+            mode =      MCONTENT;
+        }
+    }///
+
+    function savePreviousPart( markPos, curPos ){
+
+        parts.push({
+            partName:   headerName,
+            offset:     contentPos,
+            length:     markPos - contentPos,
+            content:    str.slice( contentPos, markPos ),
+        });
+
+        headerName =    str.slice( markNameBegin, markNameEnd );
+        contentPos =    curPos;
+    }///
 }///
 
 /// Private functions ----------------------------------------------------------
 
-function isPartHeader( lines, i ){
-
-    if ( i ){
-        return isEmptyLine( lines[i] ) && isEmptyLine( lines[i+2] ) && isHeaderLine( lines[i+1] );
-    } else {
-        return isEmptyLine( lines[1] ) && isHeaderLine( lines[0] );
-    }
+function isNewline( c ){
+    
+    return c === LF;
 }///
 
-function isEmptyLine( line ){
+function isSpace( c ){
 
-    return !line || line.match( reEmptyLine );
+    return ( c === SPACE ) || ( c === TAB );
 }///
 
-
-function isHeaderLine( line ){
-
-    return line && line.match( reHeader );
+function isHeaderTitle( c ){
+    
+    return /[-_0-9a-z]/i.exec( c );
 }///
 
-function getPartName( line ){
+function makeCharMap( str ){
 
-    return line.match( reHeader )[1];
-}///
-
-function joinLines( lines ){
-
-    return lines.join( "\n" );
-}///
-
-function linesLength( lines, sliceTo ){
-
-    if ( sliceTo ){
-        return sliceTo + lines.slice( 0, sliceTo ).reduce( sumLength, 0 );
-    } else {
-        return lines.length - 1 + lines.reduce( sumLength, 0 );
-    }
-}///
-
-function sumLength( sum, line ){
-
-    return sum + line.length;
+    return str.split( "" ).reduce(function( map, c ){ map[c]=true; return map; }, {} );
 }///
