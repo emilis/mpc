@@ -40,6 +40,7 @@ var MCONTENT =          i++;
 var MNEWLINE =          i++;
 /// Header sections:
 var MHEAD = {
+    START:              i++,
     OPEN:               i++,
     TEXT:               i++,
     CLOSE:              i++,
@@ -150,7 +151,9 @@ function parseString( str ){
 
             case MHEAD.OPEN:
 
-                if ( str.substr( p, 4 ) === "--- " ){
+                if ( isNewline( c )){
+                    mode =          MHEAD.OPEN;
+                } else if ( str.substr( p, 4 ) === "--- " ){
                     p +=            3;
                     linec +=        3;
                     mode =          MHEAD.TEXT;
