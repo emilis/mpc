@@ -20,7 +20,6 @@
 /// Requirements ---------------------------------------------------------------
 
 var Components =            require( "./components" );
-var fsUtils =               require( "./fs-utils" );
 var toposort =              require( "toposort" );
 
 /// Exports --------------------------------------------------------------------
@@ -45,7 +44,11 @@ function getExports( component ){
 function getRequirements( component ){
 
     if ( !component.requirements ){
-        component.requirements =    parsePart( Components.getPartContent( component, "requirements" ));
+        var names =                 parsePart( Components.getPartContent( component, "requirements" ));
+        component.requirements =    {};
+        for ( var k in names ){
+            component.requirements[k] = Components.relativeToAbsolute( component.name, names[k] );
+        }
     }
     return component.requirements;
 }///
@@ -67,7 +70,7 @@ function sortComponents( cList ){
 
         var deps =  getRequirements( component );
         for ( var k in deps ){
-            res.push([ component.name, Components.relativeToAbsolute( component.name, deps[k] )]);
+            res.push([ component.name, deps[k] ]);
         }
         return res;
     }///

@@ -132,11 +132,11 @@ function fillRequirements( cmap, component ){
         component.requiredComponents =  {};
         var reqs =                      modularity.getRequirements( component );
         for ( var k in reqs ){
-            var reqName =               components.relativeToAbsolute( component.name, reqs[k] );
-            if ( !cmap[reqName] ){
-                fillRequirements( cmap, readComponent( reqName ));
+            var reqPath =               reqs[k];
+            if ( !cmap[reqPath] ){
+                fillRequirements( cmap, readComponent( reqPath ));
             }
-            component.requiredComponents[k] =   cmap[reqName];
+            component.requiredComponents[k] =   cmap[reqPath];
         }
     }
 
