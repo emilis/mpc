@@ -29,6 +29,7 @@ var parser =            require( "./parser" );
 mpc.parseAll =          parseAll;
 mpc.parseFile =         parseFile;
 mpc.parseDir =          parseDir;
+mpc.fillRequirements =  fillRequirements;
 mpc.getParts =          components.getParts;
 mpc.getPartContent =    components.getPartContent;
 mpc.hasPart =           components.hasPart;
@@ -108,23 +109,11 @@ function parseDir( dirName, options ){
 }///
 
 
-/// Private functions ----------------------------------------------------------
-
-function flattenArray( arr ){
-
-    return Array.prototype.concat.apply( [], arr );
-}///
-
-function getValues( obj ){
-
-    return Object.getOwnPropertyNames( obj ).map( getValue );
-
-    function getValue( k ){
-        return obj[k];
-    }///
-}///
-
 function fillRequirements( cmap, component ){
+
+    if ( !component || !component.name ){
+        return cmap;
+    }
 
     if ( !cmap[component.name] ){
         cmap[component.name] =  component;
@@ -143,6 +132,23 @@ function fillRequirements( cmap, component ){
     }
 
     return cmap;
+}///
+
+
+/// Private functions ----------------------------------------------------------
+
+function flattenArray( arr ){
+
+    return Array.prototype.concat.apply( [], arr );
+}///
+
+function getValues( obj ){
+
+    return Object.getOwnPropertyNames( obj ).map( getValue );
+
+    function getValue( k ){
+        return obj[k];
+    }///
 }///
 
 function readComponent( cName ){
