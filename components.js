@@ -27,6 +27,7 @@ module.exports = {
     makeName:           makeName,
     relativeToAbsolute: relativeToAbsolute,
     hasParts:           hasParts,
+    hasPart:            hasPart,
     getParts:           getParts,
     getPartContent:     getPartContent,
     fromParts:          fromParts,
@@ -72,6 +73,11 @@ function hasParts( component, partNames ){
         
         return partNames.indexOf( p.partName ) !== -1;
     }///
+}///
+
+function hasPart( component, partName ){
+
+    return hasParts( component, [ partName ]);
 }///
 
 function getPartContent( component, partName ){
