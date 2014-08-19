@@ -101,7 +101,7 @@ function parsePart( str ){
             r[line] =           line;
         } else {
             line =              line.split( ":" );
-            r[line.shift()] =   line.join( ":" );
+            r[line.shift().trim()] =   line.join( ":" ).trim();
         }
 
         return r;
