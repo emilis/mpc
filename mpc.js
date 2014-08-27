@@ -29,7 +29,6 @@ var parser =            require( "./parser" );
 mpc.parseAll =          parseAll;
 mpc.parseFile =         parseFile;
 mpc.parseDir =          parseDir;
-mpc.fillRequirements =  fillRequirements;
 mpc.getParts =          components.getParts;
 mpc.getPartContent =    components.getPartContent;
 mpc.hasPart =           components.hasPart;
@@ -69,17 +68,19 @@ function parseFile( fileName, options ){
     options =           options || {};
 
     var component =     components.fromParts( parser.parseFile( fileName ))[0];
-    var clist =         [];
+    var clist =         [ component ];
+    var cmap =          {};
 
+    if ( options.recursive || options.fillRequirements ){
+        cmap =          clist.reduce( fillRequirements, {} );
+    }
     if ( options.recursive ){
-        clist =         getValues( fillRequirements( {}, component ));
-        if ( options.sort ){
-            clist =     modularity.sortComponents( clist );
-        }
-    } else {
-        clist =         [ component ];
+        clist =         getValues( cmap );
     }
 
+    if ( options.sort ){
+        clist =         modularity.sortComponents( clist );
+    }
 
     if ( options && options.parts ){
         return clist.filter( byParts( options.parts ));
@@ -96,6 +97,14 @@ function parseDir( dirName, options ){
     var listsOfParts =  fileNames.map( parser.parseFile );
     var parts =         flattenArray( listsOfParts );
     var clist =         components.fromParts( parts );
+    var cmap =          {};
+
+    if ( options.recursive || options.fillRequirements ){
+        cmap =          clist.reduce( fillRequirements, {} );
+    }
+    if ( options.recursive ){
+        clist =         getValues( cmap );
+    }
 
     if ( options.sort ){
         clist =         modularity.sortComponents( clist );
@@ -108,6 +117,8 @@ function parseDir( dirName, options ){
     }
 }///
 
+
+/// Private functions ----------------------------------------------------------
 
 function fillRequirements( cmap, component ){
 
@@ -134,8 +145,6 @@ function fillRequirements( cmap, component ){
     return cmap;
 }///
 
-
-/// Private functions ----------------------------------------------------------
 
 function flattenArray( arr ){
 
