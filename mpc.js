@@ -28,6 +28,7 @@ var parser =            require( "./parser" );
 
 mpc.parseAll =          parseAll;
 mpc.parseFile =         parseFile;
+mpc.parseComponent =    parseComponent;
 mpc.parseDir =          parseDir;
 mpc.getParts =          components.getParts;
 mpc.getPartContent =    components.getPartContent;
@@ -67,36 +68,37 @@ function parseFile( fileName, options ){
     fileName =          fsUtils.normalize( fileName );
     options =           options || {};
 
-    var component =     components.fromParts( parser.parseFile( fileName ))[0];
-    var clist =         [ component ];
-    var cmap =          {};
+    var clist =         components.fromParts( parser.parseFile( fileName ));
 
-    if ( options.recursive || options.fillRequirements ){
-        cmap =          clist.reduce( fillRequirements, {} );
-    }
-    if ( options.recursive ){
-        clist =         getValues( cmap );
-    }
+    return applyListOptions( clist, options );
+}///
 
-    if ( options.sort ){
-        clist =         modularity.sortComponents( clist );
-    }
+function parseComponent( path, options ){
+    options =           options || {};
 
-    if ( options && options.parts ){
-        return clist.filter( byParts( options.parts ));
-    } else {
-        return clist;
-    }
+    var clist =         [ readComponent( path )];
+
+    return applyListOptions( clist, options );
 }///
 
 
 function parseDir( dirName, options ){
     dirName =           fsUtils.normalize( dirName );
+    options =           options || {};
 
     var fileNames =     fsUtils.findAllFiles( dirName ).filter( getFileNameFilter( options ));
     var listsOfParts =  fileNames.map( parser.parseFile );
     var parts =         flattenArray( listsOfParts );
     var clist =         components.fromParts( parts );
+
+    return applyListOptions( clist, options );
+}///
+
+
+/// Private functions ----------------------------------------------------------
+
+function applyListOptions( clist, options ){
+
     var cmap =          {};
 
     if ( options.recursive || options.fillRequirements ){
@@ -117,8 +119,6 @@ function parseDir( dirName, options ){
     }
 }///
 
-
-/// Private functions ----------------------------------------------------------
 
 function fillRequirements( cmap, component ){
 
