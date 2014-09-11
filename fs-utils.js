@@ -88,7 +88,13 @@ function findByPattern( pattern ){
     var dirName =       path.dirname( pattern );
     var baseName =      path.basename( pattern );
     var re =            new RegExp( "^" + baseName + "\.[^.]+" );
-    var entries =       fs.readdirSync( dirName ).filter( re.exec.bind( re ));
+    var entries;
+
+    if ( !fs.existsSync( dirName )){
+        entries =       [];
+    } else {
+        entries =       fs.readdirSync( dirName ).filter( re.exec.bind( re ));
+    }
 
     return entries.map( getFullPath( dirName ));
 }///
