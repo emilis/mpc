@@ -26,6 +26,7 @@ var path =              require( "path" );
 
 module.exports = {
     normalize:          normalize,
+    basename:           path.basename,
     getExtension:       getExtension,
     getComponentName:   getComponentName,
     readFileString:     readFileString,

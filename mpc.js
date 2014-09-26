@@ -175,7 +175,7 @@ function byParts( parts ){
 
 function getFileNameFilter( options ){
     if ( options.all ){
-        return fnId;
+        return isNotHidden;
     } else {
         return isMpcFileName;
     }
@@ -183,10 +183,11 @@ function getFileNameFilter( options ){
 
 function isMpcFileName( fileName ){
 
-    return fsUtils.getExtension( fileName ) === "mpc";
+    return isNotHidden( fileName ) && fsUtils.getExtension( fileName ) === "mpc";
 }///
 
-function fnId( x ){
-
-    return x;
+function isNotHidden( fileName ){
+    
+    return fsUtils.basename( fileName )[0] !== ".";
 }///
+
