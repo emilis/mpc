@@ -1,23 +1,30 @@
-.PHONY = default
-
 ### Variables ------------------------------------------------------------------
 
 PUBLISH = 			git push && npm publish
+COMPRESSJS =		uglifyjs -mc warnings=false
 
 ### Tasks ----------------------------------------------------------------------
 
+.PHONY:				default publish publish-patch
+
 default:\
+	dist/parser.min.js\
 
-	echo "Nothing yet."
 
 
-.PHONY += publish
 publish:\
 
 	$(PUBLISH)
 
 
-.PHONY += publish-patch
 publish-patch:\
 
 	npm version patch && $(PUBLISH)
+
+
+### Targets --------------------------------------------------------------------
+
+dist/parser.min.js:\
+	dist/parser.js\
+
+	$(COMPRESSJS) "$^" > "$@"
