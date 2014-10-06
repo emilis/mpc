@@ -88,7 +88,7 @@ function findByPattern( pattern ){
 
     var dirName =       path.dirname( pattern );
     var baseName =      path.basename( pattern );
-    var re =            new RegExp( "^" + baseName + "\.[^.]+" );
+    var re =            new RegExp( "^" + baseName + "\\.[^.]+" );
     var entries;
 
     if ( !fs.existsSync( dirName )){
