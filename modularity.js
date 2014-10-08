@@ -60,12 +60,10 @@ function sortComponents( cList ){
     var vertices =      toposort( edges ).reverse();
     var cMap =          cList.reduce( makeMap, {} );
     var sorted =        vertices.map( getFromMap ).filter( fnId );
+    var sortedMap =     sorted.reduce( makeMap, {} );
 
-    return sorted;
+    return cList.filter( notInSorted ).concat( sorted );
     
-    /// console.log( "sortComponents", edges, vertices );
-    /// return toposort.array( cList, edges ).reverse();
-
     function getEdges( res, component ){
 
         var deps =  getRequirements( component );
@@ -82,6 +80,10 @@ function sortComponents( cList ){
 
     function getFromMap( name ){
         return cMap[name];
+    }///
+
+    function notInSorted( component ){
+        return !sortedMap[component.name];
     }///
 }///
 
