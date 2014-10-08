@@ -1,10 +1,10 @@
 #   Multi-Part Components Parser
 
-A command-line program and a Node.js package for extracting information from multi-part components.
-
 **Status:** This is a work in progress. May not fit _all_ potential use-cases. The implementation is straightforward and unoptimized for very large files, very large number of files, etc.
 
 ##  Installation
+
+You will need Node.js and npm to install MPC Parser. You can [get Node.js and npm here][nodejs-install]. Then run this from your command line:
 
 ```bash
 $ npm install -g mpc
@@ -55,3 +55,6 @@ var components =    mpc.parseFile( pathToYourFile, { recursive: true } );
 Copyright 2014 Emilis Dambauskas <emilis.d@gmail.com>.
 
 This is free software, and you are welcome to redistribute it under certain conditions; see LICENSE.txt for details.
+
+
+[nodejs-install]:   http://nodejs.org/download/
