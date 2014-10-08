@@ -1,11 +1,11 @@
 ### Variables ------------------------------------------------------------------
 
-PUBLISH = 			git push && npm publish
-COMPRESSJS =		uglifyjs -mc warnings=false
+PUBLISH =           git push && npm publish
+COMPRESSJS =        uglifyjs -mc warnings=false
 
 ### Tasks ----------------------------------------------------------------------
 
-.PHONY:				default publish publish-patch
+.PHONY:             default publish publish-patch
 
 default:\
 	dist/parser.min.js\
