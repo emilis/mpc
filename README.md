@@ -2,7 +2,7 @@
 
 **Status:** _This is a work in progress. May not fit all potential use-cases. The implementation is straightforward and unoptimized for very large files, very large number of files, etc_.
 
-For full documentation see the **[MPC Wiki][wiki]**.
+For full **documentation** see the **[MPC Wiki][wiki]**.
 
 ### Installation
 
@@ -40,7 +40,6 @@ $ npm install -g mpc
     /path/to/mpc/examples/alpha,partY,/path/to/mpc/examples/alpha.mpc,156,12
     /path/to/mpc/examples/beta,requirements,/path/to/mpc/examples/beta.mpc,82,8
     /path/to/mpc/examples/beta,partX,/path/to/mpc/examples/beta.mpc,174,10
-    /path/to/mpc/examples/beta,partZ,/path/to/mpc/examples/beta.mpc,268,11
     ...
     ```
 
