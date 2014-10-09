@@ -1,6 +1,6 @@
 #   Multi-Part Components Parser
 
-**Status:** This is a work in progress. May not fit _all_ potential use-cases. The implementation is straightforward and unoptimized for very large files, very large number of files, etc.
+**Status:** _This is a work in progress. May not fit all potential use-cases. The implementation is straightforward and unoptimized for very large files, very large number of files, etc_.
 
 For full documentation see the **[MPC Wiki][wiki]**.
 
@@ -53,7 +53,7 @@ $ npm install -g mpc
     >  require("mpc").parseDir( process.cwd() );
     ```
 
-    You should see and Array of component objects similar to this:
+    You should see an Array of component objects similar to this:
 
     ```javascript
     [ { name: '/home/emilis/work/mpc/examples/dir/zeta',
@@ -67,9 +67,11 @@ $ npm install -g mpc
 
 To see more examples see **[Examples][wiki-examples]** wiki page.
 
+If any of the above examples didn't work, please [submit an error report][issues].
+
 ##  Contributing
 
-*   Please use Github Issues for bug reporting and feature requests.
+*   Please use [Github Issues][issues] for bug reporting and feature requests.
 *   Please keep your pull requests small and make sure they merge easily with the master branch before submitting.
 *   Please send any other feedback to my email: <emilis.d@gmail.com>. It is most welcome.
 
@@ -82,6 +84,7 @@ This is free software, and you are welcome to redistribute it under certain cond
 MPC Parser is licensed under GPL v3. Please email me if you need other licensing options.
 
 
+[issues]:           https://github.com/emilis/mpc/issues
 [wiki]:             https://github.com/emilis/mpc/wiki
 [wiki-cli]:         https://github.com/emilis/mpc/wiki/CLI-Utility
 [wiki-nodejs]:      https://github.com/emilis/mpc/wiki/Node.js-Modules
