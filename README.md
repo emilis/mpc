@@ -4,9 +4,7 @@
 
 For full documentation see the **[MPC Wiki][wiki]**.
 
-##  Usage
-
-##  Installation
+### Installation
 
 You will need Node.js and npm to install MPC Parser. You can [get Node.js and npm here][nodejs-install]. Then run this from your command line:
 
