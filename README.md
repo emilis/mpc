@@ -14,56 +14,56 @@ $ npm install -g mpc
 
 ### Quick start
 
-1. Check out this package from GitHub:
+1.  Check out this package from GitHub:
 
-``` bash
-$ git clone https://github.com/emilis/mpc
-```
+    ``` bash
+    $ git clone https://github.com/emilis/mpc
+    ```
 
-2. Open examples directory:
+2.  Open examples directory:
 
-```bash
-$ cd mpc/examples/
-```
+    ```bash
+    $ cd mpc/examples/
+    ```
 
-3. Check if command line utility is working by listing all `*.mpc` file parts in current examples directory:
+3.  Check if command line utility is working by listing all `*.mpc` file parts in current examples directory:
 
-```bash
-$ mpc .
-```
+    ```bash
+    $ mpc .
+    ```
 
-You should get a list of parts inside `*.mpc` files in CSV format similar to this:
+    You should get a list of parts inside `*.mpc` files in CSV format similar to this:
 
-```csv
-/path/to/mpc/examples/alpha,requirements,/path/to/mpc/examples/alpha.mpc,22,22
-/path/to/mpc/examples/alpha,partX,/path/to/mpc/examples/alpha.mpc,61,11
-/path/to/mpc/examples/alpha,partY,/path/to/mpc/examples/alpha.mpc,156,12
-/path/to/mpc/examples/beta,requirements,/path/to/mpc/examples/beta.mpc,82,8
-/path/to/mpc/examples/beta,partX,/path/to/mpc/examples/beta.mpc,174,10
-/path/to/mpc/examples/beta,partZ,/path/to/mpc/examples/beta.mpc,268,11
-...
-```
+    ```csv
+    /path/to/mpc/examples/alpha,requirements,/path/to/mpc/examples/alpha.mpc,22,22
+    /path/to/mpc/examples/alpha,partX,/path/to/mpc/examples/alpha.mpc,61,11
+    /path/to/mpc/examples/alpha,partY,/path/to/mpc/examples/alpha.mpc,156,12
+    /path/to/mpc/examples/beta,requirements,/path/to/mpc/examples/beta.mpc,82,8
+    /path/to/mpc/examples/beta,partX,/path/to/mpc/examples/beta.mpc,174,10
+    /path/to/mpc/examples/beta,partZ,/path/to/mpc/examples/beta.mpc,268,11
+    ...
+    ```
 
-For further info on using mpc from the command line see **[MPC CLI utility][wiki-cli]** wiki page.
+    For further info on using mpc from the command line see **[MPC CLI utility][wiki-cli]** wiki page.
 
-4. Check if the Node.js package is usable by running this from the examples directory:
+4.  Check if the Node.js package is usable by running this from the examples directory:
 
-```javascript
-$ node
->  require("mpc").parseDir( process.cwd() );
-```
+    ```javascript
+    $ node
+    >  require("mpc").parseDir( process.cwd() );
+    ```
 
-You should see and Array of component objects similar to this:
+    You should see and Array of component objects similar to this:
 
-```javascript
-[ { name: '/home/emilis/work/mpc/examples/dir/zeta',
-    parts: [ [Object] ] },
-  { name: '/home/emilis/work/mpc/examples/delta',
-    parts: [ [Object] ] },
-...
-```
+    ```javascript
+    [ { name: '/home/emilis/work/mpc/examples/dir/zeta',
+        parts: [ [Object] ] },
+      { name: '/home/emilis/work/mpc/examples/delta',
+        parts: [ [Object] ] },
+    ...
+    ```
 
-For further introduction to using mpc in Node.js see **[Node.js Modules][wiki-nodejs]** wiki page.
+    For further introduction to using mpc in Node.js see **[Node.js Modules][wiki-nodejs]** wiki page.
 
 To see more examples see **[Examples][wiki-examples]** wiki page.
 
