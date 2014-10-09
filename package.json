@@ -24,7 +24,6 @@
     "url": "https://github.com/emilis/mpc/blob/master/LICENSE.txt"
   },
   "dependencies": {
-    "toposort": "0.x",
     "yargs": "1.2.x"
   }
 }
