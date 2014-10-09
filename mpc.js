@@ -19,10 +19,10 @@
 **/
 /// Requirements ---------------------------------------------------------------
 
-var components =        require( "./components" );
-var fsUtils =           require( "./fs-utils" );
-var modularity =        require( "./modularity" );
-var parser =            require( "./parser" );
+var components =        require( "./lib/components" );
+var fsUtils =           require( "./lib/fs-utils" );
+var modularity =        require( "./lib/modularity" );
+var parser =            require( "./lib/parser" );
 
 /// Exports --------------------------------------------------------------------
 
