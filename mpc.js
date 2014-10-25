@@ -32,6 +32,7 @@ mpc.parseComponent =    parseComponent;
 mpc.parseDir =          parseDir;
 mpc.getParts =          components.getParts;
 mpc.getPartContent =    components.getPartContent;
+mpc.findPartContent =   components.findPartContent;
 mpc.hasPart =           components.hasPart;
 mpc.hasParts =          components.hasParts;
 mpc.getExports =        modularity.getExports;
