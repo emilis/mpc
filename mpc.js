@@ -77,9 +77,13 @@ function parseFile( fileName, options ){
 function parseComponent( path, options ){
     options =           options || {};
 
-    var clist =         [ readComponent( path )];
+    var component =     readComponent( path );
 
-    return applyListOptions( clist, options );
+    if ( component ){
+        return applyListOptions([ component ], options );
+    } else {
+        return [];
+    }
 }///
 
 
