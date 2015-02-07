@@ -78,7 +78,7 @@ function parseFile( fileName, options ){
 function parseComponent( path, options ){
     options =           options || {};
 
-    var component =     readComponent( path );
+    var component =     readComponent( path, options );
 
     if ( component ){
         return applyListOptions([ component ], options );
@@ -123,32 +123,32 @@ function applyListOptions( clist, options ){
     } else {
         return clist;
     }
-}///
 
 
-function fillRequirements( cmap, component ){
+    function fillRequirements( cmap, component ){
 
-    if ( !component || !component.name ){
-        return cmap;
-    }
-
-    if ( !cmap[component.name] ){
-        cmap[component.name] =  component;
-    }
-
-    if ( !component.requiredComponents ){
-        component.requiredComponents =  {};
-        var reqs =                      modularity.getRequirements( component );
-        for ( var k in reqs ){
-            var reqPath =               reqs[k];
-            if ( !cmap[reqPath] ){
-                fillRequirements( cmap, readComponent( reqPath ));
-            }
-            component.requiredComponents[k] =   cmap[reqPath];
+        if ( !component || !component.name ){
+            return cmap;
         }
-    }
 
-    return cmap;
+        if ( !cmap[component.name] ){
+            cmap[component.name] =  component;
+        }
+
+        if ( !component.requiredComponents ){
+            component.requiredComponents =  {};
+            var reqs =                      modularity.getRequirements( component );
+            for ( var k in reqs ){
+                var reqPath =               reqs[k];
+                if ( !cmap[reqPath] ){
+                    fillRequirements( cmap, readComponent( reqPath, options ));
+                }
+                component.requiredComponents[k] =   cmap[reqPath];
+            }
+        }
+
+        return cmap;
+    }///
 }///
 
 
@@ -166,9 +166,9 @@ function getValues( obj ){
     }///
 }///
 
-function readComponent( cName ){
+function readComponent( cName, options ){
 
-    return components.fromParts( flattenArray( finder.findComponent( cName ).map( parser.parseFile )))[0];
+    return components.fromParts( flattenArray( finder.findComponent( cName, options ).map( parser.parseFile )))[0];
 }///
 
 function byParts( parts ){
