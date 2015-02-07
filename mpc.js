@@ -1,6 +1,6 @@
 /** Copyright ------------------------------------------------------------------
 
-    Copyright 2014 Emilis Dambauskas <emilis.d@gmail.com>.
+    Copyright 2014,2015 Emilis Dambauskas <emilis.d@gmail.com>.
 
     This file is part of MPC parser.
 
@@ -75,10 +75,10 @@ function parseFile( fileName, options ){
     return applyListOptions( clist, options );
 }///
 
-function parseComponent( path, options ){
+function parseComponent( url, options ){
     options =           options || {};
 
-    var component =     readComponent( path, options );
+    var component =     readComponent( url, options );
 
     if ( component ){
         return applyListOptions([ component ], options );
@@ -139,11 +139,11 @@ function applyListOptions( clist, options ){
             component.requiredComponents =  {};
             var reqs =                      modularity.getRequirements( component );
             for ( var k in reqs ){
-                var reqPath =               reqs[k];
-                if ( !cmap[reqPath] ){
-                    fillRequirements( cmap, readComponent( reqPath, options ));
+                var reqUrl =                reqs[k];
+                if ( !cmap[reqUrl] ){
+                    fillRequirements( cmap, readComponent( reqUrl, options ));
                 }
-                component.requiredComponents[k] =   cmap[reqPath];
+                component.requiredComponents[k] =   cmap[reqUrl];
             }
         }
 
