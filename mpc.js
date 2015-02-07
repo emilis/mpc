@@ -20,6 +20,7 @@
 /// Requirements ---------------------------------------------------------------
 
 var components =        require( "./lib/components" );
+var finder =            require( "./lib/finder" );
 var fsUtils =           require( "./lib/fs-utils" );
 var modularity =        require( "./lib/modularity" );
 var parser =            require( "./lib/parser" );
@@ -167,7 +168,7 @@ function getValues( obj ){
 
 function readComponent( cName ){
 
-    return components.fromParts( flattenArray( fsUtils.findByPattern( cName ).map( parser.parseFile )))[0];
+    return components.fromParts( flattenArray( finder.findComponent( cName ).map( parser.parseFile )))[0];
 }///
 
 function byParts( parts ){
