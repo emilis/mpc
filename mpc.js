@@ -115,7 +115,7 @@ function applyListOptions( clist, options ){
     }
 
     if ( options.sort ){
-        clist =         modularity.sortComponents( clist );
+        clist =         modularity.sortComponents( clist, options );
     }
 
     if ( options && options.parts ){
@@ -137,7 +137,7 @@ function applyListOptions( clist, options ){
 
         if ( !component.requiredComponents ){
             component.requiredComponents =  {};
-            var reqs =                      modularity.getRequirements( component );
+            var reqs =                      modularity.getRequirements( component, options );
             for ( var k in reqs ){
                 var reqUrl =                reqs[k];
                 if ( !cmap[reqUrl] ){
