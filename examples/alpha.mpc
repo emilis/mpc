@@ -1,8 +1,8 @@
 --- requirements ---
 
-beta
-gamma
-dir/epsilon
+./beta
+./gamma
+./dir/epsilon
 
 --- partX ---
 
