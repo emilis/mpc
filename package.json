@@ -1,6 +1,6 @@
 {
   "name": "mpc",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Multi-Part Components Parser",
   "preferGlobal": true,
   "homepage": "https://github.com/emilis/mpc",
